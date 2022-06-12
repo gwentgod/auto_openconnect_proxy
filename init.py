@@ -5,7 +5,7 @@ from datetime import datetime
 
 from MailClient import MailClient
 
-with open('config/oc_acc.txt') as oc_acc:
+with open('credentials/openconnect.txt') as oc_acc:
     OC_USER, OC_PWD = oc_acc.readlines()[:2]
 
 
