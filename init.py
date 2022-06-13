@@ -10,12 +10,13 @@ with open('credentials/openconnect.txt') as oc_acc:
 
 
 if __name__ == '__main__':
-    squid = subprocess.Popen(['squid'])
+    squid = subprocess.Popen(['clash', '-d', '/root/clash'], stdout=sys.stdout, stderr=sys.stderr)
 
     mail_client = MailClient()
 
     while True:
         for i in range(3):
+            print(datetime.now().isoformat(), 'Starting new connection', flush=True)
             mail_client.reset_init_time()
             oc = subprocess.Popen(['openconnect', 'vpn2fa.hku.hk'],
                                   bufsize=1, stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr,
@@ -27,10 +28,9 @@ if __name__ == '__main__':
             if token:
                 oc.stdin.write(token+'\n')
                 break
-            print(datetime.now().isoformat(), f'Faild getting token, retrying{i}/{3}')
+            print(datetime.now().isoformat(), f'Faild getting token, retrying{i}/{3}', flush=True)
         else:
-            print(datetime.now().isoformat(), 'Reached maximum reattempts.', file=sys.stderr)
+            print(datetime.now().isoformat(), 'Reached maximum reattempts.', file=sys.stderr, flush=True)
             exit(1)
 
         oc.wait()
-        print(datetime.now().isoformat(), 'Reconnecting')
