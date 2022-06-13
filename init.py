@@ -10,7 +10,7 @@ with open('credentials/openconnect.txt') as oc_acc:
 
 
 if __name__ == '__main__':
-    squid = subprocess.Popen(['clash', '-d', '/root/clash'], stdout=sys.stdout, stderr=sys.stderr)
+    squid = subprocess.Popen(['/root/clash', '-d', '/etc/clash'], stdout=sys.stdout, stderr=sys.stderr)
 
     mail_client = MailClient()
 
