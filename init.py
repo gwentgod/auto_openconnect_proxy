@@ -18,14 +18,14 @@ if __name__ == '__main__':
         for i in range(3):
             mail_client.reset_init_time()
             oc = subprocess.Popen(['openconnect', 'vpn2fa.hku.hk'],
-                                  bufsize=1, stdin=subprocess.PIPE, encoding='utf-8')
+                                  bufsize=1, stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr,
+                                  encoding='utf-8')
 
             oc.stdin.write(OC_USER)
             oc.stdin.write(OC_PWD)
             token = mail_client.parse_token()
             if token:
-                print(token)
-                oc.communicate(token)
+                oc.stdin.write(token+'\n')
                 break
             print(datetime.now().isoformat(), f'Faild getting token, retrying{i}/{3}')
         else:
