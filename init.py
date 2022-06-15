@@ -1,22 +1,22 @@
+from common import *
+from MailClient import MailClient
+
 import sys
 import subprocess
 
-from datetime import datetime
 
-from MailClient import MailClient
-
-with open('credentials/openconnect.txt') as oc_acc:
-    OC_USER, OC_PWD = oc_acc.readlines()[:2]
+OC_USER, OC_PWD = parse_file('credentials/openconnect.txt', 2)
 
 
 if __name__ == '__main__':
-    squid = subprocess.Popen(['/root/clash', '-d', '/etc/clash'], stdout=sys.stdout, stderr=sys.stderr)
+    clash = subprocess.Popen(['/root/clash', '-d', '/etc/clash'], stdout=sys.stdout, stderr=sys.stderr)
 
     mail_client = MailClient()
 
     while True:
         for i in range(3):
-            print(datetime.now().isoformat(), 'Starting new connection', flush=True)
+            logging.warning('Starting new connection')
+
             mail_client.reset_init_time()
             oc = subprocess.Popen(['openconnect', 'vpn2fa.hku.hk'],
                                   bufsize=1, stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr,
@@ -28,9 +28,12 @@ if __name__ == '__main__':
             if token:
                 oc.stdin.write(token+'\n')
                 break
-            print(datetime.now().isoformat(), f'Faild getting token, retrying{i}/{3}', flush=True)
+            logging.warning(f'Faild getting token, retrying{i}/{3}')
         else:
-            print(datetime.now().isoformat(), 'Reached maximum reattempts.', file=sys.stderr, flush=True)
+            logging.critical('Reached maximum reattempts.')
             exit(1)
 
         oc.wait()
+        if clash.poll() is not None:
+            logging.warning(f'Clash exited with code {clash.returncode}. Restarting')
+            clash = subprocess.Popen(['/root/clash', '-d', '/etc/clash'], stdout=sys.stdout, stderr=sys.stderr)
