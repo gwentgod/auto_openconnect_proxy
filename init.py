@@ -22,8 +22,8 @@ if __name__ == '__main__':
                                   bufsize=1, stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr,
                                   encoding='utf-8')
 
-            oc.stdin.write(OC_USER)
-            oc.stdin.write(OC_PWD)
+            oc.stdin.write(OC_USER+'\n')
+            oc.stdin.write(OC_PWD+'\n')
             token = mail_client.parse_token()
             if token:
                 oc.stdin.write(token+'\n')

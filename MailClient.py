@@ -7,7 +7,7 @@ from email import message_from_bytes
 from imaplib import IMAP4_SSL
 
 
-IMAP_SERVER, MAIL_USER, MAIL_PWD = parse_file('./credentials/mail.txt')
+IMAP_SERVER, MAIL_USER, MAIL_PWD = parse_file('./credentials/mail.txt', 3)
 
 
 class MailClient:
