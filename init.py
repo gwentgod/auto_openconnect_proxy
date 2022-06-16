@@ -11,9 +11,9 @@ OC_USER, OC_PWD = parse_file('credentials/openconnect.txt', 2)
 if __name__ == '__main__':
     clash = subprocess.Popen(['/root/clash', '-d', '/etc/clash'], stdout=sys.stdout, stderr=sys.stderr)
 
-    mail_client = MailClient()
-
     while True:
+        mail_client = MailClient()
+
         for i in range(3):
             logging.warning('Starting new connection')
 
@@ -28,9 +28,9 @@ if __name__ == '__main__':
             if token:
                 oc.stdin.write(token+'\n')
                 break
-            logging.warning(f'Faild getting token, retrying{i}/{3}')
+            logging.warning(f'Failed getting token, retrying{i}/{3}')
         else:
-            logging.critical('Reached maximum reattempts.')
+            logging.error('Reached maximum reattempts.')
             exit(1)
 
         oc.wait()
