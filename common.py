@@ -1,7 +1,7 @@
 import logging
 
 LOG_FORMAT = '%(asctime)s: %(levelname)s %(message)s'
-logging.basicConfig(format=LOG_FORMAT)
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
 
 def parse_file(path, item_count):

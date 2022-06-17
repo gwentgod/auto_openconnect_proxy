@@ -37,8 +37,8 @@ class MailClient:
         return None
 
     def parse_token(self):
+        logging.info('Waiting for mail')
         for _ in range(19):
-            logging.info('Waiting for mail')
             time.sleep(15)
             mail = self.download_last_mail()
 
@@ -50,7 +50,7 @@ class MailClient:
             deltat = self.initial_time - sent_time
             if sent_time > self.initial_time and deltat < timedelta(minutes=5):
                 token = mail['Subject'].split()[-1]
-                logging.info(f'Got valid token {token}')
+                logging.info(f'Received valid token {token} at {sent_time.isoformat()}')
                 return token
 
         return False
