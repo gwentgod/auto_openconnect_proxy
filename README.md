@@ -54,6 +54,17 @@ docker build -f Dockerfile -t openconnect_proxy .
         -v /path/to/clash/config/:/etc/clash \
         openconnect_proxy
     ```
+   > Basic Clash config
+   > ```
+   > log-level: error
+   > 
+   > mixed-port: 2333
+   > 
+   > allow-lan: true
+   > bind-address: "*"
+   > 
+   > mode: direct
+   > ```
 4. Access your HTTP(S) / SOCKS proxy at `192.168.1.2:2333`
 
 ### Notes
