@@ -54,7 +54,7 @@ class MailClient:
             time.sleep(5)
             mail = self.download_last_mail()
 
-            if not mail:
+            if mail is None:
                 continue
 
             sent_time = datetime.strptime(mail['Date'].split(', ')[-1], "%d %b %Y %H:%M:%S %z")
@@ -79,7 +79,7 @@ if __name__ == '__main__':
             logging.warning('Starting new connection')
 
             mail_client.reset_init_time()
-            oc = subprocess.Popen(['openconnect', 'vpn2fa.hku.hk'],
+            oc = subprocess.Popen(['openconnect', '--reconnect-timeout', '15', 'vpn2fa.hku.hk'],
                                   bufsize=1, stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr,
                                   encoding='utf-8')
             oc.stdin.write(OC_USER+'\n')
